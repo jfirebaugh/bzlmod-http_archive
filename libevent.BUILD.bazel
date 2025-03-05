@@ -1,0 +1,24 @@
+load("@rules_foreign_cc//foreign_cc:defs.bzl", "configure_make")
+
+filegroup(
+    name = "libevent_srcs",
+    srcs = glob(include = ["**"]),
+)
+
+configure_make(
+    name = "libevent",
+    args = ["-j"],
+    lib_source = ":libevent_srcs",
+    env = {
+        "LIBS": "-ldl",
+    },
+    configure_options = ["--enable-static", "--disable-shared"],
+    out_static_libs = [
+        "libevent.a",
+        "libevent_core.a",
+        "libevent_extra.a",
+        "libevent_openssl.a",
+        "libevent_pthreads.a",
+    ],
+    visibility = ["//visibility:public"],
+)
